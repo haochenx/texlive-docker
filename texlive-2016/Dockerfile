@@ -14,7 +14,7 @@ RUN curl -OL \
     http://mirror.ctan.org/systems/texlive/Images/texlive2016-20160523.iso
 
 # prepare the installation script
-ADD install-tl-ubuntu /opt/tmp/texlive-installation/install-tl-ubuntu
+ADD ../scripts/install-tl-ubuntu /opt/tmp/texlive-installation/install-tl-ubuntu
 
 # extract the contents of the ISO image
 RUN mkdir dist && (cd dist && bsdtar xf ../texlive2016-20160523.iso)
@@ -24,7 +24,7 @@ RUN ./install-tl-ubuntu -f
 RUN ./install-tl-ubuntu -g -I dist/
 
 # adding /opt/texbin to $PATH for login shells
-ADD texlive-path.sh /etc/profile.d/texlive_path.sh
+ADD ../scripts/texlive-path.sh /etc/profile.d/texlive_path.sh
 
 # cleanups
 RUN apt-get clean && rm -rf \
