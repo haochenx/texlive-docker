@@ -15,7 +15,6 @@ RUN curl -OL \
 
 # prepare the installation script
 ADD install-tl-ubuntu /opt/tmp/texlive-installation/install-tl-ubuntu
-RUN chmod +x install-tl-ubuntu
 
 # extract the contents of the ISO image
 RUN mkdir dist && (cd dist && bsdtar xf ../texlive2016-20160523.iso)
