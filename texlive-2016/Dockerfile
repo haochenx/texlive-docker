@@ -14,7 +14,7 @@ RUN curl -OL \
     http://mirror.ctan.org/systems/texlive/Images/texlive2016-20160523.iso
 
 # prepare the installation script
-ADD install-tl-ubuntu /opt/dist/texlive/install-tl-ubuntu
+ADD install-tl-ubuntu /opt/tmp/texlive-installation/install-tl-ubuntu
 RUN chmod +x install-tl-ubuntu
 
 # extract the contents of the ISO image
