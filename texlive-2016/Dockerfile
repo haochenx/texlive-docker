@@ -3,35 +3,27 @@
 FROM phusion/baseimage:0.9.18
 
 # install required packages with APT
-RUN apt-get update && apt-get install -y xz-utils wget bsdtar
+RUN apt-get update \
+    && apt-get install -y xz-utils wget bsdtar \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # prepare a working directory
 RUN mkdir -p /opt/tmp/texlive-installation
 WORKDIR /opt/tmp/texlive-installation
 
-# download the 20160532 TeX Live distribution ISO image
-RUN curl -L -o texlive.iso \
-    http://mirror.ctan.org/systems/texlive/Images/texlive2016-20160523.iso
-
 # prepare the installation script
-ADD ../scripts/install-tl-ubuntu /opt/tmp/texlive-installation/install-tl-ubuntu
+ADD install-tl-ubuntu /opt/tmp/texlive-installation/install-tl-ubuntu
 
-# extract the contents of the ISO image
-RUN mkdir dist && (cd dist && bsdtar xf ../texlive.iso)
-
-# preform the installation
-RUN ./install-tl-ubuntu -f
-RUN ./install-tl-ubuntu -g -I dist/
+# download the 20160532 TeX Live distribution ISO image, and perform the installation
+RUN curl -L -o texlive.iso \
+    http://mirror.ctan.org/systems/texlive/Images/texlive2016-20160523.iso \
+    && mkdir dist && (cd dist && bsdtar xf ../texlive.iso) \
+    && ./install-tl-ubuntu -I dist/ \
+    && rm -rf /opt/tmp
 
 # adding /opt/texbin to $PATH for login shells
-ADD ../scripts/texlive-path.sh /etc/profile.d/texlive_path.sh
-
-# cleanups
-RUN apt-get clean && rm -rf \
-    /var/lib/apt/lists/* \
-    /tmp/* \
-    /var/tmp/* \
-    /opt/tmp
+ADD texlive-path.sh /etc/profile.d/texlive_path.sh
 
 # declarations
 VOLUME ["/data"]
