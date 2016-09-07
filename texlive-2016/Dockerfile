@@ -16,9 +16,11 @@ RUN apt-get update \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
 # download the 20160532 TeX Live distribution ISO image, and perform the installation
+# remove TeX Live documentation to save space
 RUN curl -L -o texlive.iso http://mirror.ctan.org/systems/texlive/Images/texlive2016-20160523.iso \
     && mkdir dist && (cd dist && bsdtar xf ../texlive.iso) \
     && ./install-tl-ubuntu -g -I dist/ \
+    && rm -rf /usr/local/texlive/2016/texmf-dist/doc/ \
     && rm -rf /tmp/* /var/tmp/* /opt/tmp
 
 # adding /opt/texbin to $PATH for login shells
