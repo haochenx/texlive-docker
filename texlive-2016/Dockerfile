@@ -10,14 +10,14 @@ RUN mkdir -p /opt/tmp/texlive-installation
 WORKDIR /opt/tmp/texlive-installation
 
 # download the 20160532 TeX Live distribution ISO image
-RUN curl -OL \
+RUN curl -L -o texlive.iso \
     http://mirror.ctan.org/systems/texlive/Images/texlive2016-20160523.iso
 
 # prepare the installation script
 ADD ../scripts/install-tl-ubuntu /opt/tmp/texlive-installation/install-tl-ubuntu
 
 # extract the contents of the ISO image
-RUN mkdir dist && (cd dist && bsdtar xf ../texlive2016-20160523.iso)
+RUN mkdir dist && (cd dist && bsdtar xf ../texlive.iso)
 
 # preform the installation
 RUN ./install-tl-ubuntu -f
