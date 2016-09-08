@@ -23,6 +23,9 @@ RUN curl -L -o texlive.iso http://mirror.ctan.org/systems/texlive/Images/texlive
     && rm -rf /usr/local/texlive/2016/texmf-dist/doc/ \
     && rm -rf /tmp/* /var/tmp/* /opt/tmp
 
+# link dvipdfm as dvipdf
+RUN ln -s dvipdfm /opt/texbin/dvipdf
+
 # adding /opt/texbin to $PATH for login shells
 ADD texlive-path.sh /etc/profile.d/texlive_path.sh
 
