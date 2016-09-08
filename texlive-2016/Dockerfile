@@ -11,7 +11,7 @@ ADD install-tl-ubuntu /opt/tmp/texlive-installation/install-tl-ubuntu
 
 # install packages required
 RUN apt-get update \
-    && apt-get install -y xz-utils wget bsdtar \
+    && apt-get install -y ghostscript xz-utils wget bsdtar \
     && ./install-tl-ubuntu -f \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
@@ -23,8 +23,8 @@ RUN curl -L -o texlive.iso http://mirror.ctan.org/systems/texlive/Images/texlive
     && rm -rf /usr/local/texlive/2016/texmf-dist/doc/ \
     && rm -rf /tmp/* /var/tmp/* /opt/tmp
 
-# link dvipdfm as dvipdf
-RUN ln -s dvipdfm /opt/texbin/dvipdf
+# add dvipdf as for some reason it's missing
+ADD dvipdf /opt/texbin/dvipdf
 
 # adding /opt/texbin to $PATH for login shells
 ADD texlive-path.sh /etc/profile.d/texlive_path.sh
